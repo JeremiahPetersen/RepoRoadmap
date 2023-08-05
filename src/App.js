@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
+import "./App.css";
 
 function TreeNode({ node }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const hasContent =
+  const hasChildrenOrDefinitions =
     (node.endpoints && node.endpoints.length > 0) ||
-    (node.definitions && node.definitions.length > 0);
+    (node.definitions && node.definitions.length > 0) ||
+    (node.children && node.children.length > 0);
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
@@ -13,9 +15,15 @@ function TreeNode({ node }) {
 
   return (
     <li>
+      {hasChildrenOrDefinitions && (
+        <span onClick={handleToggle} style={{ cursor: "pointer" }}>
+          {isExpanded ? "↓" : "→"}
+        </span>
+      )}
       <span
         onClick={handleToggle}
-        style={hasContent ? { color: "#0077cc" } : {}}
+        className={hasChildrenOrDefinitions ? "expandable" : ""}
+        style={{ marginLeft: "5px" }}
       >
         {node.name}
       </span>
@@ -25,8 +33,8 @@ function TreeNode({ node }) {
             <div>
               <strong>Endpoints:</strong>
               <ul>
-                {node.endpoints.map((endpoint, index) => (
-                  <li key={index} style={{ color: "#0077cc" }}>
+                {node.endpoints.map((endpoint) => (
+                  <li key={endpoint} style={{ color: "#0077cc" }}>
                     {endpoint}
                   </li>
                 ))}
@@ -37,8 +45,8 @@ function TreeNode({ node }) {
             <div>
               <strong>Definitions:</strong>
               <ul>
-                {node.definitions.map((definition, index) => (
-                  <li key={index}>{definition}</li>
+                {node.definitions.map((definition) => (
+                  <li key={definition}>{definition}</li>
                 ))}
               </ul>
             </div>
@@ -58,14 +66,35 @@ function TreeNode({ node }) {
 
 function App() {
   const [tree, setTree] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredTree, setFilteredTree] = useState([]);
 
   useEffect(() => {
     // Fetch the roadmap tree structure from the server
     fetch("/data/roadmap-tree.json")
       .then((response) => response.json())
-      .then((data) => setTree(data))
+      .then((data) => {
+        setTree(data);
+        setFilteredTree(data);
+      })
       .catch((error) => console.error("Error fetching roadmap tree:", error));
   }, []);
+
+  useEffect(() => {
+    if (searchQuery) {
+      const filtered = tree.filter(
+        (node) =>
+          node.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (node.definitions &&
+            node.definitions.some((def) =>
+              def.toLowerCase().includes(searchQuery.toLowerCase())
+            ))
+      );
+      setFilteredTree(filtered);
+    } else {
+      setFilteredTree(tree);
+    }
+  }, [searchQuery, tree]);
 
   return (
     <div className="App">
@@ -77,8 +106,15 @@ function App() {
         </p>
       </header>
       <main>
+        <input
+          type="text"
+          placeholder="Search for files or definitions..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{ margin: "10px", padding: "5px", width: "90%" }}
+        />
         <ul className="tree">
-          {tree.map((rootNode) => (
+          {filteredTree.map((rootNode) => (
             <TreeNode key={rootNode.name} node={rootNode} />
           ))}
         </ul>

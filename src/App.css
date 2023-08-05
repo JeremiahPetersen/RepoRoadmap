@@ -36,11 +36,15 @@ ul.tree li {
   margin-bottom: 5px;
   padding-left: 20px;
   position: relative;
-  cursor: pointer; /* Indicate clickability */
+  cursor: pointer;
 }
 
 ul.tree li span {
-  color: #0077cc; /* Color for file names */
+  color: #000; /* Default color for file names */
+}
+
+ul.tree li span.expandable {
+  color: #0077cc; /* Color for expandable nodes */
 }
 
 ul.tree li::before {
@@ -70,12 +74,9 @@ ul.tree li:last-child::after {
 }
 
 ul.tree li > div > ul > li {
-  color: #444; /* Color for definitions */
+  color: #444;
 }
 
-/* End of Tree styles */
-
-/* Other styles for demonstration purposes */
 ul.tree ul {
   padding-left: 20px;
 }
