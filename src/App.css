@@ -106,18 +106,3 @@ ul.tree li > div > ul > li {
 ul.tree ul {
   padding-left: 20px;
 }
-
-.tooltip {
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  border-radius: 5px;
-  padding: 5px 10px;
-  font-size: 0.9em;
-  pointer-events: none;
-  z-index: 10;
-  transform: translate(-50%, -100%);
-  white-space: nowrap;
-  top: 0;
-  left: 50%;
-}

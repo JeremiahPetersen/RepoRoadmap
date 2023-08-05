@@ -3,8 +3,6 @@ import "./App.css";
 
 function TreeNode({ node }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(false);
-  const [tooltipContent, setTooltipContent] = useState("");
 
   const hasChildrenOrDefinitions =
     (node.endpoints && node.endpoints.length > 0) ||
@@ -13,15 +11,6 @@ function TreeNode({ node }) {
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
-  };
-
-  const handleMouseEnter = (content) => {
-    setTooltipContent(content);
-    setShowTooltip(true);
-  };
-
-  const handleMouseLeave = () => {
-    setShowTooltip(false);
   };
 
   return (
@@ -45,12 +34,7 @@ function TreeNode({ node }) {
               <strong>Endpoints:</strong>
               <ul>
                 {node.endpoints.map((endpoint) => (
-                  <li
-                    key={endpoint}
-                    style={{ color: "#0077cc" }}
-                    onMouseEnter={() => handleMouseEnter(endpoint)}
-                    onMouseLeave={handleMouseLeave}
-                  >
+                  <li key={endpoint} style={{ color: "#0077cc" }}>
                     {endpoint}
                   </li>
                 ))}
@@ -62,13 +46,7 @@ function TreeNode({ node }) {
               <strong>Definitions:</strong>
               <ul>
                 {node.definitions.map((definition) => (
-                  <li
-                    key={definition}
-                    onMouseEnter={() => handleMouseEnter(definition)}
-                    onMouseLeave={handleMouseLeave}
-                  >
-                    {definition}
-                  </li>
+                  <li key={definition}>{definition}</li>
                 ))}
               </ul>
             </div>
@@ -82,7 +60,6 @@ function TreeNode({ node }) {
           )}
         </div>
       )}
-      {showTooltip && <div className="tooltip">{tooltipContent}</div>}
     </li>
   );
 }
