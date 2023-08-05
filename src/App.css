@@ -1,0 +1,81 @@
+.App {
+  text-align: center;
+  padding: 20px;
+  font-family: "Arial", sans-serif;
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 20px 0;
+  color: white;
+}
+
+.App-header h1 {
+  margin: 0;
+  font-size: 2.5em;
+}
+
+.App-header p {
+  margin-top: 10px;
+  font-size: 1.2em;
+}
+
+main {
+  text-align: left;
+  margin: 20px auto;
+  max-width: 600px;
+}
+
+/* Tree styles */
+ul.tree {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+ul.tree li {
+  margin-bottom: 5px;
+  padding-left: 20px;
+  position: relative;
+  cursor: pointer; /* Indicate clickability */
+}
+
+ul.tree li span {
+  color: #0077cc; /* Color for file names */
+}
+
+ul.tree li::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background-color: #000;
+}
+
+ul.tree li::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -10px;
+  width: 6px;
+  height: 6px;
+  background-color: #000;
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+ul.tree li:last-child::after {
+  display: none;
+}
+
+ul.tree li > div > ul > li {
+  color: #444; /* Color for definitions */
+}
+
+/* End of Tree styles */
+
+/* Other styles for demonstration purposes */
+ul.tree ul {
+  padding-left: 20px;
+}
