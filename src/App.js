@@ -3,6 +3,8 @@ import "./App.css";
 
 function TreeNode({ node }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [tooltipContent, setTooltipContent] = useState("");
 
   const hasChildrenOrDefinitions =
     (node.endpoints && node.endpoints.length > 0) ||
@@ -11,6 +13,15 @@ function TreeNode({ node }) {
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
+  };
+
+  const handleMouseEnter = (content) => {
+    setTooltipContent(content);
+    setShowTooltip(true);
+  };
+
+  const handleMouseLeave = () => {
+    setShowTooltip(false);
   };
 
   return (
@@ -34,7 +45,12 @@ function TreeNode({ node }) {
               <strong>Endpoints:</strong>
               <ul>
                 {node.endpoints.map((endpoint) => (
-                  <li key={endpoint} style={{ color: "#0077cc" }}>
+                  <li
+                    key={endpoint}
+                    style={{ color: "#0077cc" }}
+                    onMouseEnter={() => handleMouseEnter(endpoint)}
+                    onMouseLeave={handleMouseLeave}
+                  >
                     {endpoint}
                   </li>
                 ))}
@@ -46,7 +62,13 @@ function TreeNode({ node }) {
               <strong>Definitions:</strong>
               <ul>
                 {node.definitions.map((definition) => (
-                  <li key={definition}>{definition}</li>
+                  <li
+                    key={definition}
+                    onMouseEnter={() => handleMouseEnter(definition)}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    {definition}
+                  </li>
                 ))}
               </ul>
             </div>
@@ -60,6 +82,7 @@ function TreeNode({ node }) {
           )}
         </div>
       )}
+      {showTooltip && <div className="tooltip">{tooltipContent}</div>}
     </li>
   );
 }
@@ -68,9 +91,9 @@ function App() {
   const [tree, setTree] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredTree, setFilteredTree] = useState([]);
+  const [theme, setTheme] = useState("light"); // New state for theme management
 
   useEffect(() => {
-    // Fetch the roadmap tree structure from the server
     fetch("/data/roadmap-tree.json")
       .then((response) => response.json())
       .then((data) => {
@@ -96,14 +119,24 @@ function App() {
     }
   }, [searchQuery, tree]);
 
+  // Function to toggle theme
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+  };
+
   return (
-    <div className="App">
+    <div className={`App ${theme}`}>
+      {" "}
+      {/* Apply theme class */}
       <header className="App-header">
         <h1>GitHub Repository Roadmap</h1>
         <p>
           Visualizing the structure and connections of files within a GitHub
           repository.
         </p>
+        <button onClick={toggleTheme}>
+          Toggle {theme === "light" ? "Dark" : "Light"} Mode
+        </button>
       </header>
       <main>
         <input

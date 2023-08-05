@@ -4,12 +4,49 @@
   font-family: "Arial", sans-serif;
 }
 
-.App-header {
+/* Light Theme */
+.App.light .App-header {
   background-color: #282c34;
-  padding: 20px 0;
   color: white;
 }
 
+.App.light ul.tree li span {
+  color: #000; /* Default color for file names */
+}
+
+.App.light ul.tree li span.expandable {
+  color: #0077cc; /* Color for expandable nodes */
+}
+
+.App.light ul.tree li::before,
+.App.light ul.tree li::after {
+  background-color: #000;
+}
+
+/* Dark Theme */
+.App.dark {
+  background-color: #282c34;
+  color: white;
+}
+
+.App.dark .App-header {
+  background-color: #4a4f58;
+}
+
+.App.dark ul.tree li span {
+  color: #fff; /* Default color for file names in dark mode */
+}
+
+.App.dark ul.tree li span.expandable {
+  color: #66aaff; /* Color for expandable nodes in dark mode */
+}
+
+.App.dark ul.tree li::before,
+.App.dark ul.tree li::after {
+  background-color: #fff;
+}
+
+/* Remaining CSS stays unchanged */
 .App-header h1 {
   margin: 0;
   font-size: 2.5em;
@@ -26,7 +63,6 @@ main {
   max-width: 600px;
 }
 
-/* Tree styles */
 ul.tree {
   list-style-type: none;
   padding-left: 0;
@@ -39,14 +75,6 @@ ul.tree li {
   cursor: pointer;
 }
 
-ul.tree li span {
-  color: #000; /* Default color for file names */
-}
-
-ul.tree li span.expandable {
-  color: #0077cc; /* Color for expandable nodes */
-}
-
 ul.tree li::before {
   content: "";
   position: absolute;
@@ -54,7 +82,6 @@ ul.tree li::before {
   left: 0;
   width: 2px;
   height: 100%;
-  background-color: #000;
 }
 
 ul.tree li::after {
@@ -64,7 +91,6 @@ ul.tree li::after {
   left: -10px;
   width: 6px;
   height: 6px;
-  background-color: #000;
   border-radius: 50%;
   transform: translateY(-50%);
 }
@@ -79,4 +105,19 @@ ul.tree li > div > ul > li {
 
 ul.tree ul {
   padding-left: 20px;
+}
+
+.tooltip {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 0.9em;
+  pointer-events: none;
+  z-index: 10;
+  transform: translate(-50%, -100%);
+  white-space: nowrap;
+  top: 0;
+  left: 50%;
 }
